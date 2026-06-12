@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#3b4a30" />
-  <title>María &amp; Abraham · Invitación para Ana y Luis</title>
-  <meta name="description" content="Invitación personal para Ana y Luis a la boda de María y Abraham." />
+  <title>María &amp; Abraham · Invitación de Boda</title>
+  <meta name="description" content="Invitación personal a la boda de María y Abraham." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -421,7 +421,7 @@
         <div class="circulo"><div class="num" id="minutos">--</div><span class="lbl">Minutos</span></div>
         <div class="circulo"><div class="num" id="segundos">--</div><span class="lbl">Segundos</span></div>
       </div>
-      <a class="btn btn-contorno" href="../recordatorio.ics">
+      <a class="btn btn-contorno" href="/recordatorio.ics">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>
         Agendar recordatorio
       </a>
@@ -540,15 +540,15 @@
   <section class="seccion s-salvia">
     <div class="interior revelar">
       <p class="eyebrow">Con cariño para</p>
-      <p class="nombre-invitado">Ana y Luis</p>
-      <div class="pases-circulo">2</div>
-      <p class="pases-lbl">Pases reservados</p>
+      <p class="nombre-invitado" id="invitado-nombre">Invitado</p>
+      <div class="pases-circulo" id="invitado-pases">1</div>
+      <p class="pases-lbl" id="invitado-pases-lbl">Pase reservado</p>
       <p class="parrafo">Por favor confírmanos tu asistencia. ¡Queremos celebrar contigo!</p>
       <div class="nota-ninos">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/><path d="M15 4h3l-3 3h3"/></svg>
         <span>Niños a dormir</span>
       </div>
-      <a class="btn btn-blanca" href="https://wa.me/584123271534?text=Hola%2C%20soy%20Ana%20y%20Luis.%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Mar%C3%ADa%20y%20Abraham." target="_blank" rel="noopener">
+      <a class="btn btn-blanca" id="wa-link" href="https://wa.me/584123271534?text=Hola%2C%20confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Mar%C3%ADa%20y%20Abraham." target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm5.6 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3-.8-2.6-1.1-4.2-3.8-4.4-4-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2 .9.6 1.4.8 1.7.9.2 0 .4 0 .5-.2l.6-.8c.2-.3.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.3Z"/></svg>
         Confirmar asistencia
       </a>
@@ -685,6 +685,35 @@
         });
       }
     } catch (e) {}
+
+    // Personalización por invitado según la ruta
+    (function () {
+      var ruta = window.location.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
+      if (!ruta) return;
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/invitados.json", true);
+      xhr.onload = function () {
+        if (xhr.status !== 200) return;
+        try {
+          var lista = JSON.parse(xhr.responseText);
+          var invitado = null;
+          for (var i = 0; i < lista.length; i++) {
+            if (lista[i].slug === ruta) { invitado = lista[i]; break; }
+          }
+          if (!invitado) return;
+          var nombre = document.getElementById("invitado-nombre");
+          if (nombre) nombre.textContent = invitado.nombre;
+          var pases = document.getElementById("invitado-pases");
+          if (pases) pases.textContent = invitado.pases;
+          var lbl = document.getElementById("invitado-pases-lbl");
+          if (lbl) lbl.textContent = invitado.pases === 1 ? "Pase reservado" : "Pases reservados";
+          var wa = document.getElementById("wa-link");
+          if (wa) wa.href = "https://wa.me/584123271534?text=" + encodeURIComponent("Hola, soy " + invitado.nombre + ". Confirmo mi asistencia a la boda de María y Abraham.");
+          document.title = "María & Abraham · Invitación para " + invitado.nombre;
+        } catch (e) {}
+      };
+      xhr.send();
+    })();
   </script>
 </body>
 </html>
