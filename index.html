@@ -4,11 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#3b4a30" />
+  <meta name="format-detection" content="telephone=no" />
   <title>María &amp; Abraham · Invitación de Boda</title>
   <meta name="description" content="Invitación personal a la boda de María y Abraham." />
+  <!-- Open Graph: vista previa al compartir por WhatsApp -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="María &amp; Abraham · ¡Nos casamos!" />
+  <meta property="og:description" content="29 de agosto de 2026 · Museo del Petróleo y Gas. Toca para ver tu invitación." />
+  <meta property="og:image" content="https://invitation-ma.vercel.app/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://invitation-ma.vercel.app/" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@300;400;500;600&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" /></noscript>
   <style>
     :root {
       --fondo: #fbf9f4;
@@ -40,26 +53,24 @@
       -webkit-font-smoothing: antialiased;
       -webkit-tap-highlight-color: transparent;
     }
+    /* Fondo pre-desenfocado: cero filter/backdrop-filter en runtime (caro en GPU móvil) */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background-image: url("fondo.jpg");
+      background-image: url("fondo-blur.webp");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       opacity: 0.08;
-      filter: blur(3px);
       pointer-events: none;
       z-index: -2;
-      mix-blend-mode: normal;
     }
     body::after {
       content: "";
       position: fixed;
       inset: 0;
       background: rgba(56, 81, 45, 0.06);
-      backdrop-filter: blur(6px);
       pointer-events: none;
       z-index: -1;
     }
@@ -77,9 +88,7 @@
 
     .interior { position: relative; z-index: 3; width: 100%; max-width: 430px; }
 
-    /* ---------- Portada (foto a pantalla completa) ---------- */
-    /* Coloca una foto suya como portada.jpg en la raíz del proyecto;
-       mientras no exista, se muestra el degradado verde. */
+    /* ---------- Portada ---------- */
     .hero {
       position: relative;
       min-height: 100vh;
@@ -89,7 +98,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2rem 1.6rem;
+      padding: calc(2rem + env(safe-area-inset-top, 0px)) 1.6rem calc(2rem + env(safe-area-inset-bottom, 0px));
       overflow: hidden;
       background-color: #33482f;
       background-image: linear-gradient(180deg, rgba(30, 38, 23, 0.10) 20%, rgba(22, 28, 17, 0.25) 100%);
@@ -102,12 +111,11 @@
       content: "";
       position: absolute;
       inset: 0;
-      background-image: url("fondo.jpg");
+      background-image: url("fondo-blur.webp");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       opacity: 0.08;
-      filter: blur(2px);
       pointer-events: none;
       z-index: 0;
     }
@@ -120,7 +128,7 @@
       .hero {
         min-height: 86vh;
         min-height: 86dvh;
-        padding: 1.4rem 1.2rem 2.4rem;
+        padding: calc(1.4rem + env(safe-area-inset-top, 0px)) 1.2rem calc(2.4rem + env(safe-area-inset-bottom, 0px));
       }
       .hero .interior {
         max-width: 100%;
@@ -140,6 +148,7 @@
       display: block;
       max-width: 240px;
       width: min(78%, 240px);
+      height: auto;
       margin: 0 auto 1.1rem;
     }
 
@@ -148,7 +157,10 @@
       font-weight: 400;
       font-size: clamp(3.4rem, 17vw, 5.4rem);
       line-height: 1.05;
-      text-shadow: 0 2px 26px rgba(0, 0, 0, 0.45);
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.35),
+        0 4px 12px rgba(0, 0, 0, 0.30),
+        0 14px 44px rgba(0, 0, 0, 0.35);
       margin-bottom: 0.4rem;
     }
 
@@ -165,21 +177,97 @@
     .hero-fecha {
       margin-top: 0.9rem;
       margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.9rem;
       font-weight: 300;
       font-size: clamp(0.85rem, 3.6vw, 1rem);
       letter-spacing: 0.3em;
       text-indent: 0.3em;
-      opacity: 0.92;
+      opacity: 0.95;
+    }
+    .hero-fecha::before,
+    .hero-fecha::after {
+      content: "";
+      width: clamp(28px, 9vw, 44px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(222, 198, 152, 0.85));
+    }
+    .hero-fecha::after {
+      background: linear-gradient(90deg, rgba(222, 198, 152, 0.85), transparent);
     }
 
-    .scroll-hint { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); color: #fff; opacity: 0.9; animation: flota 2.2s ease-in-out infinite; }
+    /* Cascada de entrada del hero (backwards: sin JS ni animación, el contenido se ve igual) */
+    @keyframes hero-entrada {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .hero-logo    { animation: hero-entrada 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.1s backwards; }
+    .hero-nombres { animation: hero-entrada 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.35s backwards; }
+    .hero-lema    { animation: hero-entrada 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.6s backwards; }
+    .hero-fecha   { animation: hero-entrada 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.8s backwards; }
+
+    .scroll-hint {
+      position: absolute; left: 50%;
+      bottom: calc(clamp(56px, 10vw, 72px) + env(safe-area-inset-bottom, 0px));
+      transform: translateX(-50%);
+      color: #fff; opacity: 0.9;
+      animation: flota 2.2s ease-in-out infinite, aparece-hint 0.9s ease 1.5s backwards;
+      transition: opacity 0.5s ease;
+    }
+    .scroll-hint.oculta { opacity: 0; }
     .scroll-hint svg { width: 26px; height: 26px; }
     @keyframes flota { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 8px); } }
+    @keyframes aparece-hint { from { opacity: 0; } to { opacity: 0.9; } }
 
     /* ---------- Tipos de sección ---------- */
     .s-blanca { background: rgba(251, 249, 244, 0.94); }
     .s-crema  { background: rgba(244, 239, 227, 0.92); }
     .s-salvia { background: linear-gradient(170deg, var(--salvia), var(--salvia-oscuro)); color: #fff; }
+
+    /* ---------- Separadores de onda (color = sección siguiente) ---------- */
+    .onda::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -1px;
+      height: clamp(30px, 7vw, 48px);
+      background: var(--onda-color, rgba(251, 249, 244, 0.94));
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 64' preserveAspectRatio='none'%3E%3Cpath d='M0 64h1440V40C1180 6 980 0 720 16C460 32 240 34 0 12Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 64' preserveAspectRatio='none'%3E%3Cpath d='M0 64h1440V40C1180 6 980 0 720 16C460 32 240 34 0 12Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .onda-blanca { --onda-color: rgba(251, 249, 244, 0.94); }
+    .onda-crema  { --onda-color: rgba(244, 239, 227, 0.92); }
+    .onda-salvia { --onda-color: var(--salvia); }
+
+    /* ---------- Divisor ornamental dorado ---------- */
+    .divisor-oro {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      width: min(240px, 70%);
+      margin: 0 auto 2.4rem;
+    }
+    .divisor-oro::before,
+    .divisor-oro::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(184, 149, 86, 0.55));
+    }
+    .divisor-oro::after {
+      background: linear-gradient(90deg, rgba(184, 149, 86, 0.55), transparent);
+    }
+    .divisor-oro i {
+      width: 7px;
+      height: 7px;
+      transform: rotate(45deg);
+      border: 1px solid var(--dorado);
+      background: rgba(184, 149, 86, 0.18);
+    }
 
     /* ---------- Encabezados ---------- */
     .ico-seccion { width: 50px; height: 50px; margin: 0 auto 1.1rem; color: var(--tinta); }
@@ -196,6 +284,17 @@
       color: var(--tinta);
     }
     .s-salvia .enc { color: #fff; }
+    .enc::after {
+      content: "";
+      display: block;
+      width: 46px;
+      height: 1px;
+      margin: 0.85rem auto 0;
+      background: linear-gradient(90deg, transparent, var(--dorado) 50%, transparent);
+    }
+    .s-salvia .enc::after {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75) 50%, transparent);
+    }
 
     .script-grande {
       font-family: var(--script);
@@ -215,20 +314,33 @@
     .s-salvia .parrafo { color: rgba(255, 255, 255, 0.94); }
 
     /* ---------- Contador en círculos ---------- */
-    .contador { display: flex; gap: clamp(0.6rem, 3.4vw, 1.1rem); justify-content: center; margin-top: 2.2rem; }
+    .contador { display: flex; gap: clamp(0.4rem, 2.5vw, 1.1rem); justify-content: center; margin-top: 2.2rem; }
     .circulo { display: flex; flex-direction: column; align-items: center; gap: 0.55rem; min-width: 0; }
     .circulo .num {
       display: flex; align-items: center; justify-content: center;
-      width: clamp(62px, 18vw, 76px); height: clamp(62px, 18vw, 76px);
+      width: clamp(56px, 17vw, 76px); height: clamp(56px, 17vw, 76px);
       border-radius: 50%;
-      background: var(--salvia);
+      background: linear-gradient(160deg, #96a685 0%, var(--salvia) 48%, var(--salvia-oscuro) 100%);
       color: #fff;
       font-weight: 600;
       font-variant-numeric: tabular-nums;
-      font-size: clamp(1.25rem, 5.6vw, 1.6rem);
-      box-shadow: 0 6px 16px rgba(116, 133, 95, 0.35);
+      font-size: clamp(1.15rem, 5.2vw, 1.6rem);
+      text-shadow: 0 1px 2px rgba(40, 51, 31, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        inset 0 -8px 14px rgba(59, 74, 48, 0.18),
+        0 1px 2px rgba(59, 74, 48, 0.16),
+        0 5px 10px rgba(116, 133, 95, 0.24),
+        0 14px 28px rgba(116, 133, 95, 0.22);
     }
-    .circulo .lbl { font-weight: 500; font-size: clamp(0.58rem, 2.5vw, 0.7rem); letter-spacing: 0.16em; text-transform: uppercase; color: var(--texto-suave); }
+    .circulo .lbl { font-weight: 500; font-size: clamp(0.66rem, 2.8vw, 0.72rem); letter-spacing: 0.16em; text-transform: uppercase; color: var(--texto-suave); }
+    @keyframes tick-num {
+      0%   { transform: scale(1); }
+      35%  { transform: scale(0.86); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    html.js .circulo .num.tick { animation: tick-num 0.35s ease-out; }
 
     /* ---------- Botones ---------- */
     .btn {
@@ -237,37 +349,96 @@
       font-family: var(--sans); font-weight: 500;
       font-size: clamp(0.78rem, 3.3vw, 0.88rem);
       letter-spacing: 0.14em; text-indent: 0.14em; text-transform: uppercase;
-      text-decoration: none; border-radius: 8px;
+      text-decoration: none; border-radius: 10px;
+      transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 0.2s ease;
+      touch-action: manipulation;
     }
     .btn svg { width: 18px; height: 18px; flex: none; }
-    .btn:active { transform: translateY(1px); }
+    .btn:active { transform: scale(0.96); }
 
-    .btn-salvia { background: var(--salvia); color: #fff; box-shadow: 0 6px 18px rgba(116, 133, 95, 0.35); }
-    .btn-contorno { border: 1px solid var(--salvia); color: var(--salvia-oscuro); }
-    .btn-blanca { background: #fff; color: var(--salvia-oscuro); box-shadow: 0 8px 22px rgba(40, 51, 31, 0.25); }
+    .btn-salvia {
+      background: linear-gradient(180deg, #93a37f 0%, var(--salvia) 40%, var(--salvia-oscuro) 100%);
+      color: #fff;
+      border: 1px solid rgba(59, 74, 48, 0.28);
+      text-shadow: 0 1px 1px rgba(40, 51, 31, 0.2);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.24),
+        0 1px 2px rgba(59, 74, 48, 0.18),
+        0 5px 12px rgba(116, 133, 95, 0.28),
+        0 12px 26px rgba(116, 133, 95, 0.22);
+    }
+    .btn-salvia:active {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 1px 2px rgba(59, 74, 48, 0.2),
+        0 3px 8px rgba(116, 133, 95, 0.24);
+    }
+    .btn-contorno {
+      border: 1px solid rgba(138, 154, 120, 0.65);
+      color: var(--salvia-oscuro);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.25));
+      box-shadow:
+        0 1px 2px rgba(59, 74, 48, 0.06),
+        0 4px 10px rgba(59, 74, 48, 0.07);
+    }
+    .btn-blanca {
+      background: linear-gradient(180deg, #ffffff 0%, #f6f1e6 100%);
+      color: var(--salvia-oscuro);
+      border: 1px solid rgba(184, 149, 86, 0.35);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        0 1px 2px rgba(40, 51, 31, 0.2),
+        0 6px 14px rgba(40, 51, 31, 0.22),
+        0 16px 32px rgba(40, 51, 31, 0.18);
+    }
 
     /* ---------- Ceremonia ---------- */
-    .fecha-hora {
-      display: flex; align-items: stretch; justify-content: center;
-      margin-top: 1.8rem;
-    }
-    .fecha-hora > div { flex: 1 1 0; padding: 0.4rem 1rem; }
-    .fecha-hora > div + div { border-left: 1px solid var(--linea); }
-    .fh-grande { font-weight: 300; font-size: clamp(1.9rem, 9vw, 2.6rem); letter-spacing: 0.06em; color: var(--tinta); white-space: nowrap; }
-    .fh-grande small { font-size: 0.45em; font-weight: 400; letter-spacing: 0.1em; }
-    .fh-chica { margin-top: 0.3rem; font-weight: 500; font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--texto-suave); }
-
     .lugar { margin-top: 1.6rem; font-weight: 500; font-size: clamp(1rem, 4.4vw, 1.15rem); color: var(--tinta); }
 
-    .mapa-wrap { margin-top: 1.7rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--linea); box-shadow: 0 10px 26px rgba(59, 74, 48, 0.12); }
+    .mapa-wrap {
+      margin-top: 1.7rem;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 6px solid #fff;
+      box-shadow:
+        0 0 0 1px rgba(184, 149, 86, 0.20),
+        0 1px 2px rgba(59, 74, 48, 0.08),
+        0 10px 22px rgba(59, 74, 48, 0.10),
+        0 24px 48px rgba(59, 74, 48, 0.10);
+    }
     .mapa-wrap iframe { display: block; width: 100%; height: clamp(200px, 40vw, 280px); border: 0; filter: saturate(0.85); }
+    .mapa-facade {
+      position: relative; display: flex; align-items: center; justify-content: center;
+      width: 100%; height: clamp(200px, 40vw, 280px);
+      background: #e9e5d8 url("fondo-blur.webp") center/cover;
+      border: 0; cursor: pointer; font-family: var(--sans); padding: 0;
+    }
+    .mapa-facade span {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      min-height: 44px; padding: 0.8rem 1.4rem; border-radius: 50px;
+      background: #fff; color: var(--salvia-oscuro);
+      font-weight: 500; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      box-shadow: 0 6px 18px rgba(59, 74, 48, 0.25);
+    }
 
     /* ---------- Vestimenta ---------- */
     .paleta { display: flex; gap: clamp(0.8rem, 4.5vw, 1.5rem); justify-content: center; margin-top: 2rem; }
     .muestra { display: flex; flex-direction: column; align-items: center; gap: 0.55rem; }
-    .muestra span { width: clamp(36px, 11vw, 46px); height: clamp(36px, 11vw, 46px); border-radius: 50%; box-shadow: 0 4px 12px rgba(59, 74, 48, 0.18); border: 2px solid #fff; }
-    .muestra small { font-weight: 500; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--texto-suave); }
+    .muestra span {
+      width: clamp(36px, 11vw, 46px); height: clamp(36px, 11vw, 46px);
+      border-radius: 50%;
+      border: 2px solid #fff;
+      outline: 1px solid rgba(184, 149, 86, 0.35);
+      outline-offset: 2px;
+      box-shadow:
+        inset 0 5px 8px rgba(255, 255, 255, 0.30),
+        inset 0 -5px 8px rgba(0, 0, 0, 0.16),
+        0 1px 2px rgba(59, 74, 48, 0.12),
+        0 6px 14px rgba(59, 74, 48, 0.18);
+    }
+    .muestra small { font-weight: 500; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--texto-suave); }
 
+    /* ---------- Galería ---------- */
     .galeria {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -277,23 +448,41 @@
     }
     .foto {
       position: relative;
-      border-radius: 18px;
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 10px 28px rgba(59, 74, 48, 0.15);
+      border: 6px solid #fff;
       background: #fff;
+      box-shadow:
+        0 0 0 1px rgba(59, 74, 48, 0.06),
+        0 1px 2px rgba(59, 74, 48, 0.10),
+        0 8px 16px rgba(59, 74, 48, 0.10),
+        0 20px 40px rgba(59, 74, 48, 0.12);
       transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
     .foto:nth-child(1) { transform: rotate(-2.5deg) translateY(0.4rem); z-index: 2; }
     .foto:nth-child(2) { transform: rotate(2deg) translateY(1.4rem); z-index: 1; }
     .foto:nth-child(3) { transform: rotate(1.8deg) translateY(-0.8rem); z-index: 2; }
     .foto:nth-child(4) { transform: rotate(-2deg) translateY(0.6rem); z-index: 1; }
-    .foto:hover { transform: rotate(0) scale(1.04); z-index: 4; box-shadow: 0 16px 36px rgba(59, 74, 48, 0.22); }
+    @media (hover: hover) and (pointer: fine) {
+      .foto:hover {
+        transform: rotate(0) scale(1.04);
+        z-index: 4;
+        box-shadow:
+          0 0 0 1px rgba(59, 74, 48, 0.06),
+          0 2px 4px rgba(59, 74, 48, 0.12),
+          0 12px 24px rgba(59, 74, 48, 0.14),
+          0 28px 56px rgba(59, 74, 48, 0.16);
+      }
+    }
     .foto img {
       display: block;
       width: 100%;
+      height: auto;
       object-fit: cover;
       aspect-ratio: 4 / 5;
+      transition: transform 0.25s ease;
     }
+    .foto:active img { transform: scale(0.95); }
 
     /* ---------- Sección personal (bloque salvia) ---------- */
     .eyebrow { font-weight: 500; font-size: clamp(0.72rem, 3.1vw, 0.85rem); letter-spacing: 0.34em; text-indent: 0.34em; text-transform: uppercase; color: rgba(255, 255, 255, 0.9); }
@@ -310,40 +499,72 @@
       display: flex; align-items: center; justify-content: center;
       width: clamp(78px, 22vw, 92px); height: clamp(78px, 22vw, 92px);
       margin: 1.8rem auto 0.7rem;
-      border: 2px solid rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.9);
       border-radius: 50%;
       font-weight: 600; font-size: clamp(1.9rem, 8vw, 2.4rem); color: #fff;
+      background: radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.03) 65%);
+      box-shadow:
+        0 0 0 5px rgba(255, 255, 255, 0.12),
+        inset 0 1px 10px rgba(255, 255, 255, 0.10),
+        0 10px 24px rgba(40, 51, 31, 0.18);
     }
     .pases-lbl { font-weight: 500; font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255, 255, 255, 0.92); }
 
     /* ---------- Cierre ---------- */
     .cierre-script { font-family: var(--script); font-size: clamp(3rem, 14vw, 4.2rem); line-height: 1.1; color: var(--tinta); }
     .cierre-nombres { font-family: var(--script); font-size: clamp(1.7rem, 7.5vw, 2.2rem); color: var(--salvia-oscuro); margin-top: 0.4rem; }
-    .cierre-fecha { margin-top: 1.4rem; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.3em; text-indent: 0.3em; text-transform: uppercase; color: var(--texto-suave); }
+    .cierre-fecha {
+      margin-top: 1.4rem;
+      font-weight: 500;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
+      text-transform: uppercase;
+      color: var(--dorado);
+    }
 
     /* ---------- Música (aparece solo si existe musica.mp3) ---------- */
     .btn-musica {
-      position: fixed; right: 16px; bottom: 16px; z-index: 40;
+      position: fixed;
+      right: calc(16px + env(safe-area-inset-right, 0px));
+      bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      z-index: 40;
       display: none; align-items: center; justify-content: center;
       width: 48px; height: 48px; border-radius: 50%;
       background: #fff; color: var(--salvia-oscuro);
       border: 1px solid var(--linea);
       box-shadow: 0 6px 18px rgba(59, 74, 48, 0.22);
       cursor: pointer;
+      transition: transform 0.18s ease;
+      touch-action: manipulation;
     }
     .btn-musica.disponible { display: flex; }
+    .btn-musica:active { transform: scale(0.9); }
     .btn-musica svg { width: 22px; height: 22px; }
-    .btn-musica.sonando { animation: pulso 2s ease-in-out infinite; }
-    @keyframes pulso { 0%, 100% { box-shadow: 0 6px 18px rgba(59, 74, 48, 0.22); } 50% { box-shadow: 0 6px 26px rgba(116, 133, 95, 0.55); } }
+    .btn-musica.sonando::after {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 2px solid var(--salvia);
+      pointer-events: none;
+      animation: onda-musica 2s ease-out infinite;
+    }
+    @keyframes onda-musica {
+      0%   { transform: scale(0.9); opacity: 0.8; }
+      70%  { transform: scale(1.45); opacity: 0; }
+      100% { transform: scale(1.45); opacity: 0; }
+    }
 
     /* ---------- Hojas cayendo (decorativas, las inyecta el JS) ---------- */
     .hojas-cayendo { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
     .hojas-cayendo span {
       position: absolute; top: 0;
       background-repeat: no-repeat; background-position: center; background-size: contain;
-      opacity: 0; will-change: transform;
+      opacity: 0;
       animation-timing-function: linear; animation-iteration-count: infinite;
     }
+    .hojas-cayendo.pausada span { animation-play-state: paused; }
     @keyframes caer {
       0%   { transform: translate3d(0, -14vh, 0) rotate(0deg); opacity: 0; }
       12%  { opacity: 0.4; }
@@ -357,30 +578,82 @@
       100% { transform: translate3d(-30px, 114vh, 0) rotate(-210deg); opacity: 0; }
     }
 
-    /* ---------- Aparición segura al hacer scroll ----------
+    /* ---------- Aparición escalonada al hacer scroll ----------
        El contenido es visible por defecto; solo con JS activo se oculta para
        animar, y un temporizador de respaldo lo fuerza a aparecer. */
-    html.js .revelar { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; }
-    html.js .revelar.visible { opacity: 1; transform: none; }
-
-    @media (prefers-reduced-motion: reduce) {
-      html.js .revelar { opacity: 1 !important; transform: none !important; transition: none; }
-      .hojas-cayendo, .scroll-hint { display: none; }
-      .btn-musica.sonando { animation: none; }
+    html.js .revelar > * {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1);
     }
+    html.js .revelar.visible > * { opacity: 1; transform: none; }
+    html.js .revelar.visible > *:nth-child(2) { transition-delay: 0.1s; }
+    html.js .revelar.visible > *:nth-child(3) { transition-delay: 0.2s; }
+    html.js .revelar.visible > *:nth-child(4) { transition-delay: 0.3s; }
+    html.js .revelar.visible > *:nth-child(5) { transition-delay: 0.4s; }
+    html.js .revelar.visible > *:nth-child(6) { transition-delay: 0.5s; }
+    html.js .revelar.visible > *:nth-child(7) { transition-delay: 0.6s; }
+    html.js .revelar.visible > *:nth-child(8) { transition-delay: 0.7s; }
+
+    /* El contador y la timeline animan a sus propios hijos, no el bloque entero */
+    html.js .revelar > .contador,
+    html.js .revelar > .timeline { opacity: 1; transform: none; transition: none; }
+
+    html.js .revelar .circulo { opacity: 0; transform: translateY(16px) scale(0.9); transition: opacity 0.55s ease, transform 0.55s ease; }
+    html.js .revelar.visible .circulo { opacity: 1; transform: none; }
+    html.js .revelar.visible .circulo:nth-child(1) { transition-delay: 0.25s; }
+    html.js .revelar.visible .circulo:nth-child(2) { transition-delay: 0.35s; }
+    html.js .revelar.visible .circulo:nth-child(3) { transition-delay: 0.45s; }
+    html.js .revelar.visible .circulo:nth-child(4) { transition-delay: 0.55s; }
 
     /* ---------- Timeline ---------- */
     .timeline { position: relative; margin: 2.4rem auto 0; max-width: 390px; }
-    .timeline::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--salvia); opacity: 0.22; transform: translateX(-50%); }
-    .tl-item { display: grid; grid-template-columns: 1fr 16px 1fr; align-items: center; margin-bottom: 1rem; position: relative; }
+    .timeline::before {
+      content: "";
+      position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(180deg, transparent 0%, rgba(138, 154, 120, 0.55) 10%, rgba(138, 154, 120, 0.55) 90%, transparent 100%);
+      transform: translateX(-50%);
+    }
+    .tl-item { display: grid; grid-template-columns: 1fr 16px 1fr; align-items: center; margin-bottom: 1.35rem; position: relative; }
     .tl-item:last-child { margin-bottom: 0; }
     .tl-lado { display: flex; flex-direction: column; gap: 0.1rem; }
     .tl-izq { align-items: flex-end; text-align: right; padding-right: 1rem; }
     .tl-der { align-items: flex-start; text-align: left; padding-left: 1rem; }
-    .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--salvia); border: 2px solid var(--crema); box-shadow: 0 0 0 2px rgba(138,154,120,0.3); justify-self: center; z-index: 2; }
+    .tl-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--dorado);
+      border: 2px solid var(--crema);
+      box-shadow: 0 0 0 1px rgba(184, 149, 86, 0.5), 0 2px 5px rgba(59, 74, 48, 0.18);
+      justify-self: center; z-index: 2;
+    }
     .tl-icono { width: clamp(26px, 7vw, 32px); height: clamp(26px, 7vw, 32px); color: var(--salvia-oscuro); margin-bottom: 0.1rem; }
     .tl-hora { font-weight: 600; font-size: clamp(0.82rem, 3.4vw, 0.92rem); letter-spacing: 0.06em; color: var(--tinta); }
-    .tl-evento { font-weight: 400; font-size: clamp(0.68rem, 2.8vw, 0.76rem); color: var(--texto-suave); line-height: 1.35; }
+    .tl-evento { font-weight: 400; font-size: clamp(0.72rem, 3vw, 0.78rem); color: var(--texto-suave); line-height: 1.35; }
+
+    /* Entradas alternadas de la timeline */
+    html.js .tl-item { opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease; }
+    html.js .tl-item:nth-child(odd)  { transform: translateX(28px); }
+    html.js .tl-item:nth-child(even) { transform: translateX(-28px); }
+    html.js .tl-item.visible { opacity: 1; transform: translateX(0); }
+    html.js .tl-item.visible:nth-child(2) { transition-delay: 0.08s; }
+    html.js .tl-item.visible:nth-child(3) { transition-delay: 0.16s; }
+    html.js .tl-item.visible:nth-child(4) { transition-delay: 0.24s; }
+    html.js .tl-item.visible:nth-child(5) { transition-delay: 0.32s; }
+    html.js .tl-item.visible:nth-child(6) { transition-delay: 0.4s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html.js .revelar > *,
+      html.js .revelar .circulo,
+      html.js .tl-item {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .hero-logo, .hero-nombres, .hero-lema, .hero-fecha,
+      .circulo .num.tick, .btn-musica.sonando::after { animation: none !important; }
+      .hojas-cayendo, .scroll-hint { display: none; }
+    }
 
     /* ---------- Nota sin niños ---------- */
     .nota-ninos { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.2rem; padding: 0.55rem 1.2rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.22); background: rgba(255,255,255,0.08); }
@@ -389,18 +662,39 @@
 
     /* ---------- Regalos ---------- */
     .regalos-grid { display: flex; flex-wrap: wrap; gap: clamp(0.8rem, 3vw, 1.2rem); justify-content: center; align-items: stretch; margin-top: 2rem; }
-    .regalo-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.55rem; padding: 1.3rem 1rem; border-radius: 14px; border: 1px solid var(--linea); background: rgba(255,255,255,0.5); min-width: 96px; flex: 1; max-width: 200px; box-shadow: 0 4px 14px rgba(59,74,48,0.08); }
-    .regalo-card svg { width: 34px; height: 34px; color: var(--salvia-oscuro); }
-    .regalo-card span { font-weight: 500; font-size: clamp(0.64rem, 2.6vw, 0.72rem); letter-spacing: 0.1em; text-transform: uppercase; color: var(--tinta); text-align: center; line-height: 1.4; }
-    .regalo-detalle { font-size: clamp(0.6rem, 2.4vw, 0.68rem); color: var(--texto-suave); text-align: center; line-height: 1.65; margin-top: 0.15rem; }
+    .regalo-card {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.55rem; padding: 1.4rem 1rem 1.3rem;
+      border-radius: 16px;
+      border: 1px solid rgba(184, 149, 86, 0.22);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.55) 100%);
+      min-width: 140px; flex: 1; max-width: 200px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.85),
+        0 1px 2px rgba(59, 74, 48, 0.05),
+        0 5px 12px rgba(59, 74, 48, 0.06),
+        0 16px 32px rgba(59, 74, 48, 0.08);
+      transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.3, 1);
+    }
+    .regalo-card:active { transform: scale(0.965); }
+    .regalo-card svg {
+      width: 54px; height: 54px;
+      padding: 11px;
+      color: var(--salvia-oscuro);
+      background: rgba(138, 154, 120, 0.14);
+      border: 1px solid rgba(184, 149, 86, 0.28);
+      border-radius: 50%;
+    }
+    .regalo-card span { font-weight: 500; font-size: clamp(0.7rem, 2.9vw, 0.76rem); letter-spacing: 0.1em; text-transform: uppercase; color: var(--tinta); text-align: center; line-height: 1.4; }
+    .regalo-detalle { font-size: clamp(0.76rem, 3.2vw, 0.82rem); color: var(--texto-suave); text-align: center; line-height: 1.65; margin-top: 0.15rem; font-variant-numeric: tabular-nums; }
     .regalo-detalle strong { font-weight: 600; color: var(--tinta); }
   </style>
 </head>
 <body>
   <!-- 1 · Portada -->
-  <header class="hero">
-    <div class="interior revelar">
-      <img class="hero-logo" src="letras.png" alt="A y M" />
+  <header class="hero onda onda-blanca">
+    <div class="interior">
+      <img class="hero-logo" src="letras.webp" alt="A y M" width="720" height="426" fetchpriority="high" decoding="async" />
       <h1 class="hero-nombres">Abraham &amp; María</h1>
       <p class="hero-lema">Nos casamos</p>
       <p class="hero-fecha">29 · 08 · 2026</p>
@@ -411,7 +705,7 @@
   </header>
 
   <!-- 2 · Bienvenida + contador -->
-  <section class="seccion s-blanca">
+  <section class="seccion s-blanca onda onda-crema">
     <div class="interior revelar">
       <p class="script-grande">¡Estás invitado!</p>
       <p class="parrafo">Nos encantaría que seas parte de este momento tan especial para nosotros. ¡Falta poco!</p>
@@ -421,14 +715,14 @@
         <div class="circulo"><div class="num" id="minutos">--</div><span class="lbl">Minutos</span></div>
         <div class="circulo"><div class="num" id="segundos">--</div><span class="lbl">Segundos</span></div>
       </div>
-      <a class="btn btn-contorno" href="/recordatorio.ics">
+      <a class="btn btn-contorno" id="cal-link" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda%20de%20Mar%C3%ADa%20y%20Abraham&dates=20260829T210000Z/20260830T070000Z&location=Museo%20del%20Petr%C3%B3leo%20y%20Gas" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>
         Agendar recordatorio
       </a>
     </div>
   </section>
 
-  <!-- 3 · Ceremonia -->
+  <!-- 3 · Itinerario -->
   <section class="seccion s-crema">
     <div class="interior revelar">
       <svg class="hojita" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3c-4.5 5.5-4.5 12.5 0 18 4.5-5.5 4.5-12.5 0-18Z"/><path d="M12 7v11"/></svg>
@@ -498,7 +792,9 @@
         </div>
       </div>
       <div class="mapa-wrap">
-        <iframe src="https://www.google.com/maps?q=Museo%20del%20Petr%C3%B3leo%20y%20Gas&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa de la sede"></iframe>
+        <button class="mapa-facade" id="mapa-facade" type="button">
+          <span>Tocar para ver el mapa</span>
+        </button>
       </div>
       <a class="btn btn-salvia" href="https://www.google.com/maps/search/?api=1&query=Museo%20del%20Petr%C3%B3leo%20y%20Gas" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
@@ -508,21 +804,22 @@
   </section>
 
   <!-- 4 · Galería de fotos -->
-  <section class="seccion s-crema">
+  <section class="seccion s-crema onda onda-blanca">
     <div class="interior revelar">
+      <div class="divisor-oro" aria-hidden="true"><i></i></div>
       <h2 class="enc">Fotos</h2>
       <p class="parrafo">Un pequeño adelanto de nuestra historia y los momentos que queremos compartir contigo.</p>
       <div class="galeria">
-        <figure class="foto"><img src="foto1.png" alt="María y Abraham en el jardín" /></figure>
-        <figure class="foto"><img src="foto2.jpeg" alt="Manos con el anillo" /></figure>
-        <figure class="foto"><img src="foto3.png" alt="Pareja frente a la casita del fondue" /></figure>
-        <figure class="foto"><img src="foto4.jpeg" alt="María y Abraham" /></figure>
+        <figure class="foto"><img src="foto1.webp" alt="María y Abraham en el jardín" width="720" height="956" loading="lazy" decoding="async" /></figure>
+        <figure class="foto"><img src="foto2.webp" alt="Manos con el anillo" width="720" height="960" loading="lazy" decoding="async" /></figure>
+        <figure class="foto"><img src="foto3.webp" alt="Pareja frente a la casita del fondue" width="720" height="960" loading="lazy" decoding="async" /></figure>
+        <figure class="foto"><img src="foto4.webp" alt="María y Abraham" width="720" height="665" loading="lazy" decoding="async" /></figure>
       </div>
     </div>
   </section>
 
   <!-- 5 · Código de vestimenta -->
-  <section class="seccion s-blanca">
+  <section class="seccion s-blanca onda onda-salvia">
     <div class="interior revelar">
       <svg class="ico-seccion" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M12 5.8a1.9 1.9 0 1 0-1.9-1.9"/><path d="M12 5.8v1.7L3.2 14.9a1 1 0 0 0 .6 1.8h16.4a1 1 0 0 0 .6-1.8L12 7.5"/></svg>
       <h2 class="enc">Vestimenta</h2>
@@ -537,7 +834,7 @@
   </section>
 
   <!-- 6 · Personal + confirmación -->
-  <section class="seccion s-salvia">
+  <section class="seccion s-salvia onda onda-blanca">
     <div class="interior revelar">
       <p class="eyebrow">Con cariño para</p>
       <p class="nombre-invitado" id="invitado-nombre">Invitado</p>
@@ -555,7 +852,7 @@
     </div>
   </section>
 
-  <!-- 6 · Regalos -->
+  <!-- 7 · Regalos -->
   <section class="seccion s-blanca">
     <div class="interior revelar">
       <svg class="ico-seccion" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13"/><path d="M3 12h18"/><path d="M12 8c-2-3-6-3-6 0s4 0 6 0c2-3 6-3 6 0s-4 0-6 0"/></svg>
@@ -581,9 +878,10 @@
     </div>
   </section>
 
-  <!-- 7 · Cierre -->
+  <!-- 8 · Cierre -->
   <section class="seccion s-blanca">
     <div class="interior revelar">
+      <div class="divisor-oro" aria-hidden="true"><i></i></div>
       <svg class="hojita" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3c-4.5 5.5-4.5 12.5 0 18 4.5-5.5 4.5-12.5 0-18Z"/><path d="M12 7v11"/></svg>
       <p class="cierre-script">Te esperamos</p>
       <p class="cierre-nombres">María &amp; Abraham</p>
@@ -603,7 +901,23 @@
     var FECHA_EVENTO = new Date(2026, 7, 29, 18, 30, 0);
 
     function dosDigitos(n) { return (n < 10 ? "0" : "") + n; }
-    function escribir(id, valor) { var el = document.getElementById(id); if (el) { el.textContent = valor; } }
+
+    var nodosContador = {
+      dias: document.getElementById("dias"),
+      horas: document.getElementById("horas"),
+      minutos: document.getElementById("minutos"),
+      segundos: document.getElementById("segundos")
+    };
+    function escribir(id, valor) {
+      var el = nodosContador[id];
+      if (!el) return;
+      valor = String(valor);
+      if (el.textContent === valor) return; // sin cambio, sin trabajo
+      el.textContent = valor;
+      el.classList.remove("tick");
+      void el.offsetWidth; // reinicia la animación
+      el.classList.add("tick");
+    }
 
     function actualizarContador() {
       try {
@@ -621,18 +935,31 @@
 
     // Aparición al hacer scroll, con respaldo por temporizador.
     var bloques = document.querySelectorAll(".revelar");
-    function mostrarTodo() { for (var i = 0; i < bloques.length; i++) { bloques[i].classList.add("visible"); } }
+    function mostrarTodo() {
+      var todos = document.querySelectorAll(".revelar, .tl-item");
+      for (var i = 0; i < todos.length; i++) { todos[i].classList.add("visible"); }
+    }
     try {
       if ("IntersectionObserver" in window) {
         var obs = new IntersectionObserver(function (entradas) {
           for (var i = 0; i < entradas.length; i++) {
             if (entradas[i].isIntersecting) { entradas[i].target.classList.add("visible"); obs.unobserve(entradas[i].target); }
           }
-        }, { threshold: 0.12 });
+        }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
         for (var j = 0; j < bloques.length; j++) { obs.observe(bloques[j]); }
+        var items = document.querySelectorAll(".tl-item");
+        var obsItems = new IntersectionObserver(function (entradas) {
+          for (var i = 0; i < entradas.length; i++) {
+            if (entradas[i].isIntersecting) { entradas[i].target.classList.add("visible"); obsItems.unobserve(entradas[i].target); }
+          }
+        }, { threshold: 0.4 });
+        for (var m = 0; m < items.length; m++) { obsItems.observe(items[m]); }
       } else { mostrarTodo(); }
     } catch (e) { mostrarTodo(); }
-    setTimeout(mostrarTodo, 3000);
+    setTimeout(function () {
+      // Respaldo: solo si el observer no reveló nada (falló o no existe)
+      if (!document.querySelector(".revelar.visible")) { mostrarTodo(); }
+    }, 3000);
 
     // Hojas cayendo (decorativas; si fallan, la página sigue completa).
     try {
@@ -647,7 +974,7 @@
         var cont = document.createElement("div");
         cont.className = "hojas-cayendo";
         cont.setAttribute("aria-hidden", "true");
-        for (var i = 0; i < 8; i++) {
+        for (var i = 0; i < 4; i++) {
           var hoja = document.createElement("span");
           var tam = 11 + Math.random() * 12;
           hoja.style.width = tam + "px";
@@ -663,16 +990,31 @@
       }
     } catch (e) {}
 
-    // Música opcional: el botón solo aparece si musica.mp3 existe y carga.
+    // Pausar hojas fuera de pantalla (ahorro de batería/GPU)
     try {
-      var audio = new Audio("../musica.mp3");
+      if ("IntersectionObserver" in window) {
+        var contsHojas = document.querySelectorAll(".hojas-cayendo");
+        var obsHojas = new IntersectionObserver(function (entradas) {
+          for (var i = 0; i < entradas.length; i++) {
+            entradas[i].target.classList.toggle("pausada", !entradas[i].isIntersecting);
+          }
+        });
+        for (var k = 0; k < contsHojas.length; k++) { obsHojas.observe(contsHojas[k]); }
+      }
+    } catch (e) {}
+
+    // Música opcional: el botón aparece si musica.mp3 existe; no se descarga hasta el primer toque.
+    try {
+      var audio = new Audio();
+      audio.preload = "none";
       audio.loop = true;
       var btnMusica = document.getElementById("btnMusica");
-      audio.addEventListener("canplaythrough", function () {
-        if (btnMusica) { btnMusica.classList.add("disponible"); }
-      }, { once: true });
-      if (btnMusica) {
+      if (btnMusica && "fetch" in window) {
+        fetch("/musica.mp3", { method: "HEAD" }).then(function (r) {
+          if (r.ok) { btnMusica.classList.add("disponible"); }
+        }).catch(function () {});
         btnMusica.addEventListener("click", function () {
+          if (!audio.src) { audio.src = "/musica.mp3"; } // carga en el primer toque (gesto válido para iOS)
           if (audio.paused) {
             audio.play();
             btnMusica.classList.add("sonando");
@@ -683,6 +1025,38 @@
             btnMusica.setAttribute("aria-label", "Reproducir música");
           }
         });
+      }
+    } catch (e) {}
+
+    // Mapa bajo demanda: el iframe de Google (~1.5MB de JS) se inyecta solo al tocar la fachada.
+    var facade = document.getElementById("mapa-facade");
+    if (facade) {
+      facade.addEventListener("click", function () {
+        var iframe = document.createElement("iframe");
+        iframe.src = "https://www.google.com/maps?q=Museo%20del%20Petr%C3%B3leo%20y%20Gas&output=embed";
+        iframe.title = "Mapa de la sede";
+        iframe.referrerPolicy = "no-referrer-when-downgrade";
+        this.parentNode.replaceChild(iframe, this);
+      });
+    }
+
+    // Ocultar la flecha del hero tras el primer scroll (listener pasivo y autodestruible)
+    var hint = document.querySelector(".scroll-hint");
+    if (hint) {
+      var ocultarHint = function () {
+        if (window.scrollY > 60) {
+          hint.classList.add("oculta");
+          window.removeEventListener("scroll", ocultarHint);
+        }
+      };
+      window.addEventListener("scroll", ocultarHint, { passive: true });
+    }
+
+    // En iPhone/iPad el .ics abre el Calendario de Apple directo; en el resto, Google Calendar.
+    try {
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        var cal = document.getElementById("cal-link");
+        if (cal) { cal.href = "/recordatorio.ics"; cal.removeAttribute("target"); }
       }
     } catch (e) {}
 
