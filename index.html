@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#3b4a30" />
+  <title>María &amp; Abraham · Invitación para Ana y Luis</title>
+  <meta name="description" content="Invitación personal para Ana y Luis a la boda de María y Abraham." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --fondo: #fbf9f4;
+      --crema: #f4efe3;
+      --salvia: #8a9a78;
+      --salvia-oscuro: #74855f;
+      --oliva: #3b4a30;
+      --tinta: #33312b;
+      --texto: #55524a;
+      --texto-suave: #6b685f;
+      --dorado: #b89556;
+      --linea: rgba(59, 74, 48, 0.14);
+
+      --script: "Allura", cursive;
+      --sans: "Montserrat", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+    body {
+      font-family: var(--sans);
+      font-weight: 400;
+      color: var(--texto);
+      background: radial-gradient(circle at top, rgba(116, 133, 95, 0.96), rgba(59, 74, 48, 0.94) 48%, rgba(40, 51, 31, 0.98) 100%);
+      position: relative;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("fondo.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.08;
+      filter: blur(3px);
+      pointer-events: none;
+      z-index: -2;
+      mix-blend-mode: normal;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(56, 81, 45, 0.06);
+      backdrop-filter: blur(6px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .seccion {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(4.5rem, 14vh, 7rem) 1.6rem;
+      overflow: hidden;
+    }
+
+    .interior { position: relative; z-index: 3; width: 100%; max-width: 430px; }
+
+    /* ---------- Portada (foto a pantalla completa) ---------- */
+    /* Coloca una foto suya como portada.jpg en la raíz del proyecto;
+       mientras no exista, se muestra el degradado verde. */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: center;
+      padding: 2rem 1.6rem clamp(4.5rem, 14vh, 7rem);
+      overflow: hidden;
+      background-color: #33482f;
+      background-image: linear-gradient(180deg, rgba(30, 38, 23, 0.10) 20%, rgba(22, 28, 17, 0.25) 100%);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #fff;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("fondo.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.08;
+      filter: blur(2px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero > .interior {
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 620px) {
+      .hero {
+        min-height: 68vh;
+        min-height: 68dvh;
+        padding: 1.4rem 1.2rem 2.4rem;
+      }
+      .hero .interior {
+        max-width: 100%;
+      }
+      .hero-nombres {
+        font-size: clamp(2.4rem, 14vw, 4rem);
+      }
+      .hero-lema {
+        font-size: clamp(0.85rem, 4vw, 1rem);
+      }
+      .hero-fecha {
+        font-size: clamp(0.8rem, 3.4vw, 0.95rem);
+      }
+    }
+
+    .hero-logo {
+      display: block;
+      max-width: 240px;
+      width: min(78%, 240px);
+      margin: 0 auto 1.1rem;
+    }
+
+    .hero-nombres {
+      font-family: var(--script);
+      font-weight: 400;
+      font-size: clamp(3.4rem, 17vw, 5.4rem);
+      line-height: 1.05;
+      text-shadow: 0 2px 26px rgba(0, 0, 0, 0.45);
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-lema {
+      margin-top: 1.1rem;
+      font-weight: 500;
+      font-size: clamp(0.95rem, 4.2vw, 1.2rem);
+      letter-spacing: 0.42em;
+      text-indent: 0.42em;
+      text-transform: uppercase;
+      text-shadow: 0 1px 14px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-fecha {
+      margin-top: 0.9rem;
+      margin-bottom: 1.2rem;
+      font-weight: 300;
+      font-size: clamp(0.85rem, 3.6vw, 1rem);
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
+      opacity: 0.92;
+    }
+
+    .scroll-hint { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); color: #fff; opacity: 0.9; animation: flota 2.2s ease-in-out infinite; }
+    .scroll-hint svg { width: 26px; height: 26px; }
+    @keyframes flota { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 8px); } }
+
+    /* ---------- Tipos de sección ---------- */
+    .s-blanca { background: rgba(251, 249, 244, 0.94); }
+    .s-crema  { background: rgba(244, 239, 227, 0.92); }
+    .s-salvia { background: linear-gradient(170deg, var(--salvia), var(--salvia-oscuro)); color: #fff; }
+
+    /* ---------- Encabezados ---------- */
+    .ico-seccion { width: 50px; height: 50px; margin: 0 auto 1.1rem; color: var(--tinta); }
+    .s-salvia .ico-seccion { color: #fff; }
+
+    .hojita { width: 22px; height: 22px; margin: 0 auto 0.9rem; color: var(--salvia); transform: rotate(24deg); }
+
+    .enc {
+      font-weight: 600;
+      font-size: clamp(1.05rem, 4.6vw, 1.3rem);
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
+      text-transform: uppercase;
+      color: var(--tinta);
+    }
+    .s-salvia .enc { color: #fff; }
+
+    .script-grande {
+      font-family: var(--script);
+      font-weight: 400;
+      font-size: clamp(3rem, 14vw, 4.4rem);
+      line-height: 1.1;
+      color: var(--tinta);
+    }
+
+    .parrafo {
+      margin: 1.1rem auto 0;
+      max-width: 30ch;
+      font-size: clamp(0.95rem, 4vw, 1.05rem);
+      line-height: 1.75;
+      color: var(--texto);
+    }
+    .s-salvia .parrafo { color: rgba(255, 255, 255, 0.94); }
+
+    /* ---------- Contador en círculos ---------- */
+    .contador { display: flex; gap: clamp(0.6rem, 3.4vw, 1.1rem); justify-content: center; margin-top: 2.2rem; }
+    .circulo { display: flex; flex-direction: column; align-items: center; gap: 0.55rem; min-width: 0; }
+    .circulo .num {
+      display: flex; align-items: center; justify-content: center;
+      width: clamp(62px, 18vw, 76px); height: clamp(62px, 18vw, 76px);
+      border-radius: 50%;
+      background: var(--salvia);
+      color: #fff;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      font-size: clamp(1.25rem, 5.6vw, 1.6rem);
+      box-shadow: 0 6px 16px rgba(116, 133, 95, 0.35);
+    }
+    .circulo .lbl { font-weight: 500; font-size: clamp(0.58rem, 2.5vw, 0.7rem); letter-spacing: 0.16em; text-transform: uppercase; color: var(--texto-suave); }
+
+    /* ---------- Botones ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+      margin-top: 1.8rem; padding: 0.95rem 1.7rem;
+      font-family: var(--sans); font-weight: 500;
+      font-size: clamp(0.78rem, 3.3vw, 0.88rem);
+      letter-spacing: 0.14em; text-indent: 0.14em; text-transform: uppercase;
+      text-decoration: none; border-radius: 8px;
+    }
+    .btn svg { width: 18px; height: 18px; flex: none; }
+    .btn:active { transform: translateY(1px); }
+
+    .btn-salvia { background: var(--salvia); color: #fff; box-shadow: 0 6px 18px rgba(116, 133, 95, 0.35); }
+    .btn-contorno { border: 1px solid var(--salvia); color: var(--salvia-oscuro); }
+    .btn-blanca { background: #fff; color: var(--salvia-oscuro); box-shadow: 0 8px 22px rgba(40, 51, 31, 0.25); }
+
+    /* ---------- Ceremonia ---------- */
+    .fecha-hora {
+      display: flex; align-items: stretch; justify-content: center;
+      margin-top: 1.8rem;
+    }
+    .fecha-hora > div { flex: 1 1 0; padding: 0.4rem 1rem; }
+    .fecha-hora > div + div { border-left: 1px solid var(--linea); }
+    .fh-grande { font-weight: 300; font-size: clamp(1.9rem, 9vw, 2.6rem); letter-spacing: 0.06em; color: var(--tinta); white-space: nowrap; }
+    .fh-grande small { font-size: 0.45em; font-weight: 400; letter-spacing: 0.1em; }
+    .fh-chica { margin-top: 0.3rem; font-weight: 500; font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--texto-suave); }
+
+    .lugar { margin-top: 1.6rem; font-weight: 500; font-size: clamp(1rem, 4.4vw, 1.15rem); color: var(--tinta); }
+
+    .mapa-wrap { margin-top: 1.7rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--linea); box-shadow: 0 10px 26px rgba(59, 74, 48, 0.12); }
+    .mapa-wrap iframe { display: block; width: 100%; height: clamp(200px, 40vw, 280px); border: 0; filter: saturate(0.85); }
+
+    /* ---------- Vestimenta ---------- */
+    .paleta { display: flex; gap: clamp(0.8rem, 4.5vw, 1.5rem); justify-content: center; margin-top: 2rem; }
+    .muestra { display: flex; flex-direction: column; align-items: center; gap: 0.55rem; }
+    .muestra span { width: clamp(36px, 11vw, 46px); height: clamp(36px, 11vw, 46px); border-radius: 50%; box-shadow: 0 4px 12px rgba(59, 74, 48, 0.18); border: 2px solid #fff; }
+    .muestra small { font-weight: 500; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--texto-suave); }
+
+    .galeria {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(0.9rem, 2.5vw, 1.2rem);
+      margin-top: 2rem;
+    }
+    .foto {
+      position: relative;
+      flex: 1 1 clamp(160px, 28%, 240px);
+      min-width: 140px;
+      max-width: 280px;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 16px 36px rgba(59, 74, 48, 0.14);
+      background: #fff;
+      margin-left: 0;
+    }
+    .foto + .foto {
+      margin-left: -1rem;
+    }
+    .foto:nth-child(1) { z-index: 3; }
+    .foto:nth-child(2) { z-index: 2; }
+    .foto:nth-child(3) { z-index: 1; }
+    .foto img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 4 / 5;
+      transition: transform 0.35s ease;
+    }
+    .foto:hover img {
+      transform: scale(1.04);
+    }
+    @media (max-width: 620px) {
+      .foto + .foto { margin-left: 0; }
+    }
+
+    /* ---------- Sección personal (bloque salvia) ---------- */
+    .eyebrow { font-weight: 500; font-size: clamp(0.72rem, 3.1vw, 0.85rem); letter-spacing: 0.34em; text-indent: 0.34em; text-transform: uppercase; color: rgba(255, 255, 255, 0.9); }
+    .nombre-invitado {
+      font-family: var(--script);
+      font-weight: 400;
+      font-size: clamp(3rem, 14vw, 4.6rem);
+      line-height: 1.1;
+      color: #fff;
+      margin-top: 0.5rem;
+      text-shadow: 0 2px 16px rgba(40, 51, 31, 0.3);
+    }
+    .pases-circulo {
+      display: flex; align-items: center; justify-content: center;
+      width: clamp(78px, 22vw, 92px); height: clamp(78px, 22vw, 92px);
+      margin: 1.8rem auto 0.7rem;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      font-weight: 600; font-size: clamp(1.9rem, 8vw, 2.4rem); color: #fff;
+    }
+    .pases-lbl { font-weight: 500; font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255, 255, 255, 0.92); }
+
+    /* ---------- Cierre ---------- */
+    .cierre-script { font-family: var(--script); font-size: clamp(3rem, 14vw, 4.2rem); line-height: 1.1; color: var(--tinta); }
+    .cierre-nombres { font-family: var(--script); font-size: clamp(1.7rem, 7.5vw, 2.2rem); color: var(--salvia-oscuro); margin-top: 0.4rem; }
+    .cierre-fecha { margin-top: 1.4rem; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.3em; text-indent: 0.3em; text-transform: uppercase; color: var(--texto-suave); }
+
+    /* ---------- Música (aparece solo si existe musica.mp3) ---------- */
+    .btn-musica {
+      position: fixed; right: 16px; bottom: 16px; z-index: 40;
+      display: none; align-items: center; justify-content: center;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: #fff; color: var(--salvia-oscuro);
+      border: 1px solid var(--linea);
+      box-shadow: 0 6px 18px rgba(59, 74, 48, 0.22);
+      cursor: pointer;
+    }
+    .btn-musica.disponible { display: flex; }
+    .btn-musica svg { width: 22px; height: 22px; }
+    .btn-musica.sonando { animation: pulso 2s ease-in-out infinite; }
+    @keyframes pulso { 0%, 100% { box-shadow: 0 6px 18px rgba(59, 74, 48, 0.22); } 50% { box-shadow: 0 6px 26px rgba(116, 133, 95, 0.55); } }
+
+    /* ---------- Hojas cayendo (decorativas, las inyecta el JS) ---------- */
+    .hojas-cayendo { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .hojas-cayendo span {
+      position: absolute; top: 0;
+      background-repeat: no-repeat; background-position: center; background-size: contain;
+      opacity: 0; will-change: transform;
+      animation-timing-function: linear; animation-iteration-count: infinite;
+    }
+    @keyframes caer {
+      0%   { transform: translate3d(0, -14vh, 0) rotate(0deg); opacity: 0; }
+      12%  { opacity: 0.4; }
+      88%  { opacity: 0.3; }
+      100% { transform: translate3d(24px, 114vh, 0) rotate(180deg); opacity: 0; }
+    }
+    @keyframes caer2 {
+      0%   { transform: translate3d(0, -14vh, 0) rotate(0deg); opacity: 0; }
+      12%  { opacity: 0.4; }
+      88%  { opacity: 0.28; }
+      100% { transform: translate3d(-30px, 114vh, 0) rotate(-210deg); opacity: 0; }
+    }
+
+    /* ---------- Aparición segura al hacer scroll ----------
+       El contenido es visible por defecto; solo con JS activo se oculta para
+       animar, y un temporizador de respaldo lo fuerza a aparecer. */
+    html.js .revelar { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    html.js .revelar.visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html.js .revelar { opacity: 1 !important; transform: none !important; transition: none; }
+      .hojas-cayendo, .scroll-hint { display: none; }
+      .btn-musica.sonando { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 1 · Portada -->
+  <header class="hero">
+    <div class="interior revelar">
+      <img class="hero-logo" src="letras.png" alt="A y M" />
+      <h1 class="hero-nombres">Abraham &amp; María</h1>
+      <p class="hero-lema">Nos casamos</p>
+      <p class="hero-fecha">29 · 08 · 2026</p>
+    </div>
+    <div class="scroll-hint" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+  </header>
+
+  <!-- 2 · Bienvenida + contador -->
+  <section class="seccion s-blanca">
+    <div class="interior revelar">
+      <p class="script-grande">¡Estás invitado!</p>
+      <p class="parrafo">Nos encantaría que seas parte de este momento tan especial para nosotros. ¡Falta poco!</p>
+      <div class="contador" role="timer" aria-live="off">
+        <div class="circulo"><div class="num" id="dias">--</div><span class="lbl">Días</span></div>
+        <div class="circulo"><div class="num" id="horas">--</div><span class="lbl">Horas</span></div>
+        <div class="circulo"><div class="num" id="minutos">--</div><span class="lbl">Minutos</span></div>
+        <div class="circulo"><div class="num" id="segundos">--</div><span class="lbl">Segundos</span></div>
+      </div>
+      <a class="btn btn-contorno" href="../recordatorio.ics">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>
+        Agendar recordatorio
+      </a>
+    </div>
+  </section>
+
+  <!-- 3 · Ceremonia -->
+  <section class="seccion s-crema">
+    <div class="interior revelar">
+      <svg class="hojita" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3c-4.5 5.5-4.5 12.5 0 18 4.5-5.5 4.5-12.5 0-18Z"/><path d="M12 7v11"/></svg>
+      <h2 class="enc">Ceremonia</h2>
+      <p class="parrafo">Te esperamos en el</p>
+      <p class="lugar">Museo del Petróleo y Gas</p>
+      <div class="fecha-hora">
+        <div>
+          <p class="fh-grande">29 <small>AGO</small></p>
+          <p class="fh-chica">Sábado · 2026</p>
+        </div>
+        <div>
+          <p class="fh-grande">6:30 <small>P.M.</small></p>
+          <p class="fh-chica">Recepción</p>
+        </div>
+      </div>
+      <div class="mapa-wrap">
+        <iframe src="https://www.google.com/maps?q=Museo%20del%20Petr%C3%B3leo%20y%20Gas&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa de la sede"></iframe>
+      </div>
+      <a class="btn btn-salvia" href="https://www.google.com/maps/search/?api=1&query=Museo%20del%20Petr%C3%B3leo%20y%20Gas" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        Ver ubicación
+      </a>
+    </div>
+  </section>
+
+  <!-- 4 · Galería de fotos -->
+  <section class="seccion s-crema">
+    <div class="interior revelar">
+      <h2 class="enc">Fotos</h2>
+      <p class="parrafo">Un pequeño adelanto de nuestra historia y los momentos que queremos compartir contigo.</p>
+      <div class="galeria">
+        <figure class="foto"><img src="foto1.png" alt="María y Abraham en el jardín" /></figure>
+        <figure class="foto"><img src="foto2.jpeg" alt="Manos con el anillo" /></figure>
+        <figure class="foto"><img src="foto3.png" alt="Pareja frente a la casita del fondue" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · Código de vestimenta -->
+  <section class="seccion s-blanca">
+    <div class="interior revelar">
+      <svg class="ico-seccion" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M12 5.8a1.9 1.9 0 1 0-1.9-1.9"/><path d="M12 5.8v1.7L3.2 14.9a1 1 0 0 0 .6 1.8h16.4a1 1 0 0 0 .6-1.8L12 7.5"/></svg>
+      <h2 class="enc">Vestimenta</h2>
+      <p class="parrafo">Etiqueta formal. ¡Luce tu mejor look!<br />Reservamos el blanco y el crema para la novia.</p>
+      <div class="paleta" aria-hidden="true">
+        <div class="muestra"><span style="background:#3b4a30"></span><small>Oliva</small></div>
+        <div class="muestra"><span style="background:#8a9a78"></span><small>Salvia</small></div>
+        <div class="muestra"><span style="background:#e6dcc4"></span><small>Beige</small></div>
+        <div class="muestra"><span style="background:#b89556"></span><small>Dorado</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · Personal + confirmación -->
+  <section class="seccion s-salvia">
+    <div class="interior revelar">
+      <p class="eyebrow">Con cariño para</p>
+      <p class="nombre-invitado">Ana y Luis</p>
+      <div class="pases-circulo">2</div>
+      <p class="pases-lbl">Pases reservados</p>
+      <p class="parrafo">Por favor confírmanos tu asistencia. ¡Queremos celebrar contigo!</p>
+      <a class="btn btn-blanca" href="https://wa.me/0000000000?text=Hola%2C%20soy%20Ana%20y%20Luis.%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Mar%C3%ADa%20y%20Abraham." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm5.6 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3-.8-2.6-1.1-4.2-3.8-4.4-4-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2 .9.6 1.4.8 1.7.9.2 0 .4 0 .5-.2l.6-.8c.2-.3.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.3Z"/></svg>
+        Confirmar asistencia
+      </a>
+    </div>
+  </section>
+
+  <!-- 6 · Cierre -->
+  <section class="seccion s-blanca">
+    <div class="interior revelar">
+      <svg class="hojita" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3c-4.5 5.5-4.5 12.5 0 18 4.5-5.5 4.5-12.5 0-18Z"/><path d="M12 7v11"/></svg>
+      <p class="cierre-script">Te esperamos</p>
+      <p class="cierre-nombres">María &amp; Abraham</p>
+      <p class="cierre-fecha">29 · Agosto · 2026</p>
+    </div>
+  </section>
+
+  <!-- Música opcional: coloca musica.mp3 en la raíz y el botón aparece solo. -->
+  <button class="btn-musica" id="btnMusica" type="button" aria-label="Reproducir música">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>
+  </button>
+
+  <script>
+    document.documentElement.className += " js";
+
+    // Fecha numérica: mes 7 = agosto (0-11). Evita el campo en blanco en Safari iOS.
+    var FECHA_EVENTO = new Date(2026, 7, 29, 18, 30, 0);
+
+    function dosDigitos(n) { return (n < 10 ? "0" : "") + n; }
+    function escribir(id, valor) { var el = document.getElementById(id); if (el) { el.textContent = valor; } }
+
+    function actualizarContador() {
+      try {
+        var ahora = new Date();
+        var restante = Math.floor((FECHA_EVENTO.getTime() - ahora.getTime()) / 1000);
+        if (restante < 0) { restante = 0; }
+        escribir("dias", Math.floor(restante / 86400));
+        escribir("horas", dosDigitos(Math.floor((restante % 86400) / 3600)));
+        escribir("minutos", dosDigitos(Math.floor((restante % 3600) / 60)));
+        escribir("segundos", dosDigitos(restante % 60));
+      } catch (e) {}
+    }
+    actualizarContador();
+    setInterval(actualizarContador, 1000);
+
+    // Aparición al hacer scroll, con respaldo por temporizador.
+    var bloques = document.querySelectorAll(".revelar");
+    function mostrarTodo() { for (var i = 0; i < bloques.length; i++) { bloques[i].classList.add("visible"); } }
+    try {
+      if ("IntersectionObserver" in window) {
+        var obs = new IntersectionObserver(function (entradas) {
+          for (var i = 0; i < entradas.length; i++) {
+            if (entradas[i].isIntersecting) { entradas[i].target.classList.add("visible"); obs.unobserve(entradas[i].target); }
+          }
+        }, { threshold: 0.12 });
+        for (var j = 0; j < bloques.length; j++) { obs.observe(bloques[j]); }
+      } else { mostrarTodo(); }
+    } catch (e) { mostrarTodo(); }
+    setTimeout(mostrarTodo, 3000);
+
+    // Hojas cayendo (decorativas; si fallan, la página sigue completa).
+    try {
+      var COLORES = ["%238a9a78", "%23a9b894", "%23c7b78e"];
+      function svgHoja(c) {
+        return "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>"
+          + "<path d='M50 5 C28 26 28 60 50 95 C72 60 72 26 50 5 Z' fill='" + c + "'/>"
+          + "<path d='M50 16 C46 42 46 68 50 88' fill='none' stroke='%23ffffff' stroke-width='2' opacity='0.4'/></svg>";
+      }
+      var zonas = document.querySelectorAll(".hero, .seccion");
+      for (var s = 0; s < zonas.length; s++) {
+        var cont = document.createElement("div");
+        cont.className = "hojas-cayendo";
+        cont.setAttribute("aria-hidden", "true");
+        for (var i = 0; i < 4; i++) {
+          var hoja = document.createElement("span");
+          var tam = 11 + Math.random() * 12;
+          hoja.style.width = tam + "px";
+          hoja.style.height = tam + "px";
+          hoja.style.left = (Math.random() * 100) + "%";
+          hoja.style.backgroundImage = 'url("' + svgHoja(COLORES[i % COLORES.length]) + '")';
+          hoja.style.animationName = (Math.random() < 0.5 ? "caer" : "caer2");
+          hoja.style.animationDuration = (10 + Math.random() * 8) + "s";
+          hoja.style.animationDelay = (Math.random() * 10) + "s";
+          cont.appendChild(hoja);
+        }
+        zonas[s].insertBefore(cont, zonas[s].firstChild);
+      }
+    } catch (e) {}
+
+    // Música opcional: el botón solo aparece si musica.mp3 existe y carga.
+    try {
+      var audio = new Audio("../musica.mp3");
+      audio.loop = true;
+      var btnMusica = document.getElementById("btnMusica");
+      audio.addEventListener("canplaythrough", function () {
+        if (btnMusica) { btnMusica.classList.add("disponible"); }
+      }, { once: true });
+      if (btnMusica) {
+        btnMusica.addEventListener("click", function () {
+          if (audio.paused) {
+            audio.play();
+            btnMusica.classList.add("sonando");
+            btnMusica.setAttribute("aria-label", "Pausar música");
+          } else {
+            audio.pause();
+            btnMusica.classList.remove("sonando");
+            btnMusica.setAttribute("aria-label", "Reproducir música");
+          }
+        });
+      }
+    } catch (e) {}
+  </script>
+</body>
+</html>
