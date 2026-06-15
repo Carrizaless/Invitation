@@ -704,9 +704,49 @@
     .regalo-card span { font-weight: 500; font-size: clamp(0.7rem, 2.9vw, 0.76rem); letter-spacing: 0.1em; text-transform: uppercase; color: var(--tinta); text-align: center; line-height: 1.4; }
     .regalo-detalle { font-size: clamp(0.76rem, 3.2vw, 0.82rem); color: var(--texto-suave); text-align: center; line-height: 1.65; margin-top: 0.15rem; font-variant-numeric: tabular-nums; }
     .regalo-detalle strong { font-weight: 600; color: var(--tinta); }
+
+    /* ---------- Pantalla de bienvenida ---------- */
+    .splash {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--oliva);
+      color: #fff;
+      cursor: pointer;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .splash.oculto { opacity: 0; visibility: hidden; pointer-events: none; }
+    .splash-logo { width: clamp(120px, 35vw, 200px); margin-bottom: 1.5rem; filter: brightness(1.1); }
+    .splash-nombres { font-family: 'Allura', cursive; font-size: clamp(2.4rem, 8vw, 3.6rem); line-height: 1.1; }
+    .splash-fecha { font-size: clamp(0.7rem, 2.8vw, 0.82rem); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 0.6rem; opacity: 0.75; }
+    .splash-abrir {
+      margin-top: 2.5rem;
+      padding: 0.8rem 2.4rem;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: clamp(0.72rem, 2.8vw, 0.82rem);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      animation: pulso-splash 2.2s ease-in-out infinite;
+    }
+    @keyframes pulso-splash {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.04); }
+    }
+    body.splash-activo { overflow: hidden; }
   </style>
 </head>
-<body>
+<body class="splash-activo">
+  <!-- Pantalla de bienvenida -->
+  <div class="splash" id="splash">
+    <img class="splash-logo" src="letras.webp" alt="M y A" width="720" height="426" />
+    <p class="splash-nombres">María &amp; Abraham</p>
+    <p class="splash-fecha">29 · Agosto · 2026</p>
+    <span class="splash-abrir" id="splash-abrir">Abrir invitación</span>
+  </div>
   <!-- 1 · Portada -->
   <header class="hero onda onda-blanca">
     <div class="interior">
@@ -1048,20 +1088,19 @@
         btnMusica.addEventListener("click", function () {
           if (audio.paused) { playMusica(); } else { pauseMusica(); }
         });
-        var autoIniciado = false;
-        function autoIniciar() {
-          if (autoIniciado) return;
-          autoIniciado = true;
-          if (audio.paused) { playMusica(); }
-          document.removeEventListener("click", autoIniciar);
-          document.removeEventListener("touchstart", autoIniciar);
-          document.removeEventListener("scroll", autoIniciar);
-        }
-        document.addEventListener("click", autoIniciar, { once: true });
-        document.addEventListener("touchstart", autoIniciar, { once: true });
-        document.addEventListener("scroll", autoIniciar, { once: true });
       }
     } catch (e) {}
+
+    // Splash de bienvenida: al tocar, arranca la música y revela la invitación.
+    var splash = document.getElementById("splash");
+    if (splash) {
+      splash.addEventListener("click", function () {
+        splash.classList.add("oculto");
+        document.body.classList.remove("splash-activo");
+        if (typeof playMusica === "function") { playMusica(); }
+        setTimeout(function () { splash.remove(); }, 700);
+      });
+    }
 
     // Mapa bajo demanda: el iframe de Google (~1.5MB de JS) se inyecta solo al tocar la fachada.
     var facade = document.getElementById("mapa-facade");
