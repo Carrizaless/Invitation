@@ -660,6 +660,22 @@
     .nota-ninos svg { width: 20px; height: 20px; flex-shrink: 0; color: rgba(255,255,255,0.8); }
     .nota-ninos span { font-weight: 500; font-size: clamp(0.68rem, 2.8vw, 0.76rem); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.88); }
 
+    /* ---------- Nota de confirmación ---------- */
+    .nota-confirma {
+      margin-top: 2rem;
+      padding: 1.1rem 1.4rem;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      text-align: center;
+    }
+    .nota-confirma p {
+      font-size: clamp(0.76rem, 3.2vw, 0.84rem);
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.88);
+    }
+    .nota-confirma strong { color: #fff; font-weight: 600; }
+
     /* ---------- Regalos ---------- */
     .regalos-grid { display: flex; flex-wrap: wrap; gap: clamp(0.8rem, 3vw, 1.2rem); justify-content: center; align-items: stretch; margin-top: 2rem; }
     .regalo-card {
@@ -849,6 +865,10 @@
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm5.6 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3-.8-2.6-1.1-4.2-3.8-4.4-4-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2 .9.6 1.4.8 1.7.9.2 0 .4 0 .5-.2l.6-.8c.2-.3.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.3Z"/></svg>
         Confirmar asistencia
       </a>
+      <div class="nota-confirma" id="nota-confirma">
+        <p>¡Ayúdanos a que todo salga perfecto! Confirma antes del <strong>9 de agosto de 2026</strong>.</p>
+        <p>Los pases son personales — si tu invitación indica 2, son <strong>2 lugares reservados solo para ustedes</strong>.</p>
+      </div>
     </div>
   </section>
 
@@ -1080,10 +1100,92 @@
           var pases = document.getElementById("invitado-pases");
           if (pases) pases.textContent = invitado.pases;
           var lbl = document.getElementById("invitado-pases-lbl");
-          if (lbl) lbl.textContent = invitado.pases === 1 ? "Pase reservado" : "Pases reservados";
           var wa = document.getElementById("wa-link");
-          if (wa) wa.href = "https://wa.me/584123271534?text=" + encodeURIComponent("Hola, soy " + invitado.nombre + ". Confirmo mi asistencia a la boda de María y Abraham.");
-          document.title = "María & Abraham · Invitación para " + invitado.nombre;
+          var waNum = invitado.whatsapp || "584123271534";
+
+          if (invitado.lang === "en") {
+            document.documentElement.lang = "en";
+            if (lbl) lbl.textContent = invitado.pases === 1 ? "Reserved pass" : "Reserved passes";
+            if (wa) wa.href = "https://wa.me/" + waNum + "?text=" + encodeURIComponent("Hi, I'm " + invitado.nombre + ". I confirm my attendance to María and Abraham's wedding.");
+            document.title = "María & Abraham · Invitation for " + invitado.nombre;
+
+            var t = function(sel, txt) { var el = document.querySelector(sel); if (el) el.textContent = txt; };
+            var h = function(sel, html) { var el = document.querySelector(sel); if (el) el.innerHTML = html; };
+
+            t(".hero-lema", "We're getting married");
+            t(".script-grande", "You're invited!");
+            h(".seccion.s-blanca.onda.onda-crema .parrafo", "We would love for you to be part of this very special moment for us. Almost there!");
+            var lbls = document.querySelectorAll(".circulo .lbl");
+            if (lbls[0]) lbls[0].textContent = "Days";
+            if (lbls[1]) lbls[1].textContent = "Hours";
+            if (lbls[2]) lbls[2].textContent = "Minutes";
+            if (lbls[3]) lbls[3].textContent = "Seconds";
+            var calLink = document.getElementById("cal-link");
+            if (calLink) { var calSpan = calLink.lastChild; if (calSpan) calSpan.textContent = " Set reminder"; }
+
+            t(".seccion.s-crema .enc", "Itinerary");
+            t(".seccion.s-crema .parrafo", "We'll be waiting for you at");
+            var eventos = document.querySelectorAll(".tl-evento");
+            if (eventos[0]) eventos[0].textContent = "Guest arrival";
+            if (eventos[1]) eventos[1].textContent = "Civil Ceremony";
+            if (eventos[2]) eventos[2].textContent = "Reception";
+            if (eventos[3]) eventos[3].textContent = "Dinner";
+            if (eventos[4]) eventos[4].textContent = "Let's dance!";
+            if (eventos[5]) eventos[5].textContent = "End of event";
+            var mapFacade = document.querySelector(".mapa-facade span");
+            if (mapFacade) mapFacade.textContent = "Tap to see the map";
+            var btnUbi = document.querySelector(".seccion.s-crema .btn-salvia");
+            if (btnUbi) { var ubiSpan = btnUbi.lastChild; if (ubiSpan) ubiSpan.textContent = " See location"; }
+
+            t(".seccion.s-crema.onda ~ .seccion .enc", "Photos");
+            var fotoP = document.querySelector(".seccion.s-crema.onda ~ .seccion .parrafo");
+            if (fotoP) fotoP.textContent = "A little preview of our story and the moments we want to share with you.";
+
+            var vestSec = document.querySelector(".seccion.s-blanca.onda.onda-salvia");
+            if (vestSec) {
+              var vestEnc = vestSec.querySelector(".enc");
+              if (vestEnc) vestEnc.textContent = "Dress Code";
+              var vestP = vestSec.querySelector(".parrafo");
+              if (vestP) vestP.innerHTML = "Semi-formal attire. Dress your best!<br />White and cream are reserved for the bride.";
+              var muestras = vestSec.querySelectorAll(".muestra small");
+              if (muestras[0]) muestras[0].textContent = "Olive";
+              if (muestras[1]) muestras[1].textContent = "Sage";
+              if (muestras[2]) muestras[2].textContent = "Beige";
+              if (muestras[3]) muestras[3].textContent = "Gold";
+            }
+
+            t(".eyebrow", "With love for");
+            var confP = document.querySelector(".seccion.s-salvia .parrafo");
+            if (confP) confP.textContent = "Please confirm your attendance. We want to celebrate with you!";
+            var notaNinos = document.querySelector(".nota-ninos span");
+            if (notaNinos) notaNinos.textContent = "No kids";
+            var btnConf = document.querySelector("#wa-link");
+            if (btnConf) { var confSpan = btnConf.lastChild; if (confSpan) confSpan.textContent = " Confirm attendance"; }
+            var notaConf = document.getElementById("nota-confirma");
+            if (notaConf) notaConf.innerHTML = "<p>Help us make everything perfect! Please confirm by <strong>August 9, 2026</strong>.</p><p>Passes are personal — if your invitation says 2, those are <strong>2 spots reserved just for you</strong>.</p>";
+
+            var regSec = document.querySelector(".seccion.s-blanca:last-of-type .enc, .seccion:nth-last-of-type(2) .enc");
+            var regalosEncs = document.querySelectorAll(".enc");
+            for (var r = 0; r < regalosEncs.length; r++) {
+              if (regalosEncs[r].textContent === "Regalos") { regalosEncs[r].textContent = "Gifts"; break; }
+            }
+            var regP = document.querySelectorAll(".parrafo");
+            for (var rp = 0; rp < regP.length; rp++) {
+              if (regP[rp].textContent.indexOf("detalle con nosotros") !== -1) { regP[rp].textContent = "If you'd like to give us a gift, here are the options:"; break; }
+            }
+            var regCards = document.querySelectorAll(".regalo-card span");
+            if (regCards[0]) regCards[0].textContent = "Mobile Pay";
+            if (regCards[2]) regCards[2].textContent = "Cash";
+            var regDetalles = document.querySelectorAll(".regalo-detalle");
+            if (regDetalles[2]) regDetalles[2].textContent = "On the wedding day";
+
+            t(".cierre-script", "We'll be waiting");
+            t(".cierre-fecha", "29 · August · 2026");
+          } else {
+            if (lbl) lbl.textContent = invitado.pases === 1 ? "Pase reservado" : "Pases reservados";
+            if (wa) wa.href = "https://wa.me/" + waNum + "?text=" + encodeURIComponent("Hola, soy " + invitado.nombre + ". Confirmo mi asistencia a la boda de María y Abraham.");
+            document.title = "María & Abraham · Invitación para " + invitado.nombre;
+          }
         } catch (e) {}
       };
       xhr.send();
