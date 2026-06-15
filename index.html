@@ -1033,18 +1033,33 @@
         fetch("/musica.mp3", { method: "HEAD" }).then(function (r) {
           if (r.ok) { btnMusica.classList.add("disponible"); }
         }).catch(function () {});
-        btnMusica.addEventListener("click", function () {
-          if (!audio.src) { audio.src = "/musica.mp3"; } // carga en el primer toque (gesto válido para iOS)
-          if (audio.paused) {
-            audio.play();
+        function playMusica() {
+          if (!audio.src) { audio.src = "/musica.mp3"; }
+          audio.play().then(function () {
             btnMusica.classList.add("sonando");
             btnMusica.setAttribute("aria-label", "Pausar música");
-          } else {
-            audio.pause();
-            btnMusica.classList.remove("sonando");
-            btnMusica.setAttribute("aria-label", "Reproducir música");
-          }
+          }).catch(function () {});
+        }
+        function pauseMusica() {
+          audio.pause();
+          btnMusica.classList.remove("sonando");
+          btnMusica.setAttribute("aria-label", "Reproducir música");
+        }
+        btnMusica.addEventListener("click", function () {
+          if (audio.paused) { playMusica(); } else { pauseMusica(); }
         });
+        var autoIniciado = false;
+        function autoIniciar() {
+          if (autoIniciado) return;
+          autoIniciado = true;
+          if (audio.paused) { playMusica(); }
+          document.removeEventListener("click", autoIniciar);
+          document.removeEventListener("touchstart", autoIniciar);
+          document.removeEventListener("scroll", autoIniciar);
+        }
+        document.addEventListener("click", autoIniciar, { once: true });
+        document.addEventListener("touchstart", autoIniciar, { once: true });
+        document.addEventListener("scroll", autoIniciar, { once: true });
       }
     } catch (e) {}
 
