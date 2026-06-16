@@ -1068,7 +1068,7 @@
       var audio = new Audio();
       audio.preload = "none";
       audio.loop = true;
-      audio.volume = 0.4;
+      audio.volume = 0.2;
       var btnMusica = document.getElementById("btnMusica");
       if (btnMusica && "fetch" in window) {
         fetch("/musica.mp3", { method: "HEAD" }).then(function (r) {
