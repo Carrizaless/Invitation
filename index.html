@@ -1201,8 +1201,9 @@
             if (vestSec) {
               var vestEnc = vestSec.querySelector(".enc");
               if (vestEnc) vestEnc.textContent = "Dress Code";
-              var vestP = vestSec.querySelector(".parrafo");
-              if (vestP) vestP.innerHTML = "Semi-formal attire. Dress your best!<br />White and cream are reserved for the bride.";
+              var vestPs = vestSec.querySelectorAll(".parrafo");
+              if (vestPs[0]) vestPs[0].innerHTML = "Semi-formal attire. Dress your best!<br />White and cream are reserved for the bride.";
+              if (vestPs[1]) vestPs[1].textContent = "Our wedding palette — feel free to take inspiration from these tones.";
               var muestras = vestSec.querySelectorAll(".muestra small");
               if (muestras[0]) muestras[0].textContent = "Olive";
               if (muestras[1]) muestras[1].textContent = "Sage";
@@ -1230,13 +1231,16 @@
               if (regP[rp].textContent.indexOf("detalle con nosotros") !== -1) { regP[rp].textContent = "If you'd like to give us a gift, here are the options:"; break; }
             }
             var regCards = document.querySelectorAll(".regalo-card span");
-            if (regCards[0]) regCards[0].textContent = "Mobile Pay";
+            if (regCards[0]) regCards[0].textContent = "Pago Móvil";
             if (regCards[2]) regCards[2].textContent = "Cash";
             var regDetalles = document.querySelectorAll(".regalo-detalle");
             if (regDetalles[2]) regDetalles[2].textContent = "On the wedding day";
 
             t(".cierre-script", "We'll be waiting");
             t(".cierre-fecha", "29 · August · 2026");
+            t(".splash-nombres", "María & Abraham");
+            t(".splash-fecha", "29 · August · 2026");
+            t("#splash-abrir", "Open invitation");
           } else {
             if (lbl) lbl.textContent = invitado.pases === 1 ? "Pase reservado" : "Pases reservados";
             if (wa) wa.href = "https://wa.me/" + waNum + "?text=" + encodeURIComponent("Hola, soy " + invitado.nombre + ". Confirmo mi asistencia a la boda de María y Abraham.");
