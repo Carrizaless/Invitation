@@ -40,5 +40,6 @@
   {"slug": "selman-celik", "nombre": "Selman Çelik", "pases": 1, "whatsapp": "584121945851", "lang": "en"},
   {"slug": "andres-restrepo", "nombre": "Andres Restrepo", "pases": 1, "whatsapp": "584121945851"},
   {"slug": "adonis-vergara", "nombre": "Adonis Vergara", "pases": 2, "whatsapp": "584121945851"},
-  {"slug": "aldrin-rojas", "nombre": "Aldrin Rojas", "pases": 1, "whatsapp": "584121945851"}
+  {"slug": "aldrin-rojas", "nombre": "Aldrin Rojas", "pases": 1, "whatsapp": "584121945851"},
+  {"slug": "prima-alejandra", "nombre": "Prima Alejandra", "pases": 2}
 ]
